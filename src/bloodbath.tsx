@@ -1,15 +1,14 @@
-//I gave up on documentation for this, have fun looking at chatGPT's leftover documentation
-//The code is way too long and sloppy so e
+// bloodbath.tsx contains the logic and events for the simulation
 
-import React, { useState } from 'react'; // Import React and useState hook
-import './App.css'; // Import CSS styles
-import { CookieType } from './tributes'; // Import the CookieType interface or type
+import React, { useState } from 'react';
+import './App.css';
+import { CookieType } from './tributes';
 
 interface ReapingProps {
-    cookies: CookieType[]; // Define the prop type
+    cookies: CookieType[]; // Define the type for the cookies array
 }
 
-function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bloodbath component
+function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
     const [cookieArray, setCookieArray] = useState(cookies); // Initialize state for cookie array
     const [simulationReady, setSimulationReady] = useState(true); // Initialize state for simulation readiness
     const [output, setOutput] = useState<{ Cookie1: string; Cookie2: string; result: React.ReactNode; }[]>([]); // Initialize state for simulation output
@@ -20,13 +19,14 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
         let daysCounter = 1; // Initialize the days counter outside the loop
         let time = "Day";
 
+        // This is the main game loop, continue game until only one cookie is the winner
         while (cookieArray.length > 2) { // Loop until only one cookie remains in the array
             if (actions % 120 === 0 && cookieArray.length > 4) { // Check if it's the 7th day
                 feast(actions); // Call feast function on every 7th day
             }
             if (actions % 20 === 0 && cookieArray.length > 2) { // Check if it's the 7th day
                 if (actions > 0) {
-                    if (time === "Night") { // Check if it's night to increment daysCou
+                    if (time === "Night") { // Check if it's night to increment days
                         daysCounter++;
                     }
                     if (time === "Day") {
@@ -35,7 +35,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
                         time = "Day";
                     }
                 }
-                displayDay(daysCounter, time); // Call displayDay function with days and time
+                displayDay(daysCounter, time);
             }
             if (cookieArray.length > 1 && cookieArray.length > 2) {
                 selectEvent(time); // Perform a simulation step
@@ -43,6 +43,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
             }
         }
 
+        // Manage the final duel
         time = "Finale";
         displayDay(daysCounter, time);
         while (cookieArray.length > 1) {
@@ -51,7 +52,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
 
     }
 
-
+    // displayDay prints the day and time during the simulation
     function displayDay(daysCounter: number, time: string) {
         // Define the output state and setter function using useState hook
 
@@ -84,6 +85,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
         ]);
     }
 
+    // Determine which event is used based on a variety of factors
     function selectEvent(time: string) {
         const randomProbability = Math.random(); // Generate a random number between 0 and 1
         if (time === "Day") {
@@ -177,17 +179,19 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
         setCookieArray([...cookieArray]); // Update the state with the modified array to trigger a re-render
     }
 
+    // Every attribute a cookie should have
     type CookieType = {
         name: string;
         health: number;
         damage: number;
         weapon: string;
         isAlive: boolean;
-        picture: string; // Assuming 'picture' is a property of a cookie object
-        // Add any other properties if necessary
+        picture: string;
     };
 
+    // Feast event code
     function feast(actions: number) {
+        // Types of weapons
         const weapons = [
             { weaponName: "stick", weaponDamage: 10 },
             { weaponName: "shovel", weaponDamage: 20 },
@@ -201,6 +205,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
             { weaponName: "bombs", weaponDamage: 50 },
         ];
 
+        // Possible event outcomes outputted as text
         const weaponMessages: { [key: string]: string } = {
             "stick": "finds a stick on the ground, then decides to use it as a weapon",
             "shovel": "finds a shovel, then decides to use it as a weapon",
@@ -253,6 +258,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
             "explosives": ["landmines", "bombs"]
         };
 
+        // Initialize the feast
         if (actions > 0) {
             let result: React.ReactNode = (
                 <div className="feastlabel">
@@ -270,8 +276,10 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
             ]);
         }
 
+        // Choose which cookies attend the feast
         const feastCookies = cookieArray.filter(_ => Math.random() < 0.5);
 
+        // Feast safety checks and edge cases
         if (actions > 0) {
             if (feastCookies.length < 2) {
                 let result2: React.ReactNode = (
@@ -310,7 +318,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
             }
         }
 
-
+        // Manage cookies who did not attend the feast
         const leftFeastCookies = cookieArray.filter(cookie => !feastCookies.includes(cookie));
 
         leftFeastCookies.forEach(currentCookie => {
@@ -338,10 +346,11 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
             ]);
         });
 
+        // Manage event outcomes
         feastCookies.forEach(currentCookie => {
             if (currentCookie.isAlive) {
                 const outcome = Math.random();
-                if (outcome < 0.33) {
+                if (outcome < 0.33) { // 33% a cookie grabs supplies
                     currentCookie.health += 50;
                     setOutput(prevResults => [
                         ...prevResults,
@@ -352,7 +361,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
                         }
                     ]);
                 }
-                else if (outcome < 0.67) {
+                else if (outcome < 0.67) { // 33% chance a cookie grabs a weapon
                     const randomWeaponIndex = Math.floor(Math.random() * weapons.length);
                     const randomWeapon = weapons[randomWeaponIndex];
 
@@ -374,7 +383,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
                             result: result
                         }
                     ]);
-                } else {
+                } else { // 33% chance a cookie gets hurt
                     let damagedCookie: CookieType | undefined;
                     do {
                         damagedCookie = feastCookies.filter(cookie => cookie !== currentCookie)[Math.floor(Math.random() * (feastCookies.length - 1))];
@@ -434,6 +443,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
                         </>
                     );
 
+                    // If cookie dies during feast, remove them
                     if (damagedCookie.health <= 0) {
                         damagedCookie.isAlive = false;
                         const index = cookieArray.findIndex(cookie => cookie.name === damagedCookie.name);
@@ -457,6 +467,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
             setCookieArray([...feastCookies]);
         });
 
+        // End the feast
         if (actions > 0) {
             let result2: React.ReactNode = (
                 <div className="feastlabel">
@@ -490,8 +501,10 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
         }
     }
 
+    // This function simulates a duel event
+    function duel() { 
 
-    function duel() { // Function to simulate a duel
+        // Possible text outputs for duels
         const noWeaponEvents = [
             "holds {target}'s head under a lake",
             "holds {target}'s head under a river",
@@ -550,20 +563,21 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
 
         randomCookie2.health -= randomCookie1.damage; // Reduce health of the killed cookie by killer's damage
 
+        // Manage weapons
         let eventMessage = "";
         if (!randomCookie1.weapon || randomCookie1.weapon === "none") {
             const randomEventIndex = Math.floor(Math.random() * noWeaponEvents.length);
             eventMessage = noWeaponEvents[randomEventIndex].replace("{target}", randomCookie2.name);
         } else {
-            let weaponClass: keyof typeof weaponClasses = "melee"; // Explicit type declaration
+            let weaponClass: keyof typeof weaponClasses = "melee";
             for (let key in weaponClasses) {
-                if (weaponClasses[key as keyof typeof weaponClasses].includes(randomCookie1.weapon)) { // Type assertion
+                if (weaponClasses[key as keyof typeof weaponClasses].includes(randomCookie1.weapon)) {
                     weaponClass = key as keyof typeof weaponClasses;
                     break;
                 }
             }
 
-            let eventArray: string[] = []; // Initialize eventArray
+            let eventArray: string[] = [];
             if (weaponClass === "melee") {
                 eventArray = meleeEvents;
             } else if (weaponClass === "ranged") {
@@ -578,6 +592,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
                 .replace("{weapon}", randomCookie1.weapon);
         }
 
+        // Output wether attacked cookie survives or dies
         let result = (
             <>
                 <strong>{randomCookie1.name}</strong> {eventMessage}
@@ -629,6 +644,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
             { weaponName: "bombs", weaponDamage: 50 },
         ];
 
+        // Possible text outputs when a cookie gets a weapon
         const weaponMessages: { [key: string]: string } = {
             "stick": "finds a stick on the ground, then decides to use it as a weapon",
             "shovel": "finds a shovel, then decides to use it as a weapon",
@@ -774,7 +790,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
     }
 
     function selfDeath() {
-        // Array of possible harmful events with a fixed damage of 50
+        // Possible accidental events with different amounts of damage
         const events = [
             { eventName: "landmine", damage: 70 },
             { eventName: "pit", damage: 20 },
@@ -789,6 +805,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
             { eventName: "electric fence", damage: 50 }
         ];
 
+        // Possible text output for accidental events
         const eventMessages: { [key: string]: string } = {
             "landmine": "accidentally steps on a landmine",
             "pit": "falls into a pit",
@@ -907,7 +924,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
     }
 
     function goofOff() {
-        // Array of possible goof-off events
+        // Array of possible events for when a cookie fools around
         const events = [
             "camouflages themself in the bushes",
             "constructs a hut made out of grass",
@@ -927,8 +944,8 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
         const randomEventIndex = Math.floor(Math.random() * events.length); // Randomly select an event index
         const randomEvent = events[randomEventIndex]; // Get the selected event
 
-        const randomIndexCookie1 = Math.floor(Math.random() * cookieArray.length); // Get a random index for the cookie to goof off
-        const randomCookie1 = cookieArray[randomIndexCookie1]; // Get the goofing off cookie
+        const randomIndexCookie1 = Math.floor(Math.random() * cookieArray.length); // Get a random index for the cookie to fool around
+        const randomCookie1 = cookieArray[randomIndexCookie1]; // Get the fooling around cookie
 
         let result: React.ReactNode = (
             <>
@@ -948,7 +965,10 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
         setCookieArray([...cookieArray]); // Update the state with the modified array to trigger a re-render
     }
 
-    function duelShowdown() { // Function to simulate a duel
+    // Function to simulate a duel
+    function duelShowdown() {
+
+        // Possible text outputs for duels
         const noWeaponEvents = [
             "holds {target}'s head under a lake",
             "holds {target}'s head under a river",
@@ -1013,7 +1033,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
             const randomEventIndex = Math.floor(Math.random() * noWeaponEvents.length);
             eventMessage = noWeaponEvents[randomEventIndex].replace("{target}", randomCookie2.name);
         } else {
-            let weaponClass: keyof typeof weaponClasses = "melee"; // Explicit type declaration
+            let weaponClass: keyof typeof weaponClasses = "melee";
             for (let key in weaponClasses) {
                 if (weaponClasses[key as keyof typeof weaponClasses].includes(randomCookie1.weapon)) { // Type assertion
                     weaponClass = key as keyof typeof weaponClasses;
@@ -1021,7 +1041,8 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement { // Define Bl
                 }
             }
 
-            let eventArray: string[] = []; // Initialize eventArray
+            // Choose event based on weapon type
+            let eventArray: string[] = [];
             if (weaponClass === "melee") {
                 eventArray = meleeEvents;
             } else if (weaponClass === "ranged") {

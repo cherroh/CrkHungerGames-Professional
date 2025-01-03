@@ -1,4 +1,4 @@
-//App.tsx is the homepage
+// App.tsx is the homepage
 
 import React, { useState } from 'react';
 import './App.css';
@@ -9,15 +9,15 @@ import ChangeCast from './ChangeCast';
 import cookiesData from './tributes';
 
 function App(): React.ReactElement {
-  const [phase, setPhase] = useState<'reaping' | 'bloodbath'>('reaping'); //Manage the state of the place the user is currently at
+  const [phase, setPhase] = useState<'reaping' | 'bloodbath'>('reaping'); // Manage the state of the place the user is currently at
   const [cookies, setCookies] = useState(cookiesData); // Manage the state of the cookies array
 
-  //clicking the reset button reloads the website, deleting all saved information and progress
+  // Clicking the reset button reloads the website, deleting all saved information and progress
   function resetAll(): void {
     window.location.reload();
   }
 
-  //clicking the "begin simulation" button takes the user to the next place: the bloodbath
+  // Clicking the "begin simulation" button takes the user to the next place: the bloodbath
   function beginSimulation(): void {
     setPhase('bloodbath');
   }

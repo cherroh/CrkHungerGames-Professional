@@ -1,4 +1,4 @@
-//tributes.tsx holds the cookie array, with default values set by cherrow
+// tributes.tsx holds the cookie array, with default values set by the author of this website
 
 // Define the types for all cookies
 export type CookieType = {

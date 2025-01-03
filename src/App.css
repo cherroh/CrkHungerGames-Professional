@@ -1,6 +1,6 @@
-/*this is the only css file in use right now*/
+/*This is the only css file in use right now*/
 
-/*the whole website*/
+/*This styles the whole website*/
 body {
   background: #5d5050;
   font-size: 14px;
@@ -8,7 +8,7 @@ body {
   height: 100%;
 }
 
-/*cherrow logo*/
+/*This styles the logo in the top left of the website*/
 img.logo {
   position: absolute;
   height: 175px;
@@ -19,7 +19,7 @@ img.logo {
   margin-bottom: 20px;
 }
 
-/*Cookie Run Hunger Games header*/
+/*This styles the Cookie Run Hunger Games header*/
 .headerlabel {
   position: absolute;
   text-align: center;
@@ -33,7 +33,7 @@ img.logo {
   width: 180px;
 }
 
-/*Reset button*/
+/*This styles the reset button*/
 .reset-button {
   position: absolute;
   text-align: center;
@@ -49,13 +49,13 @@ img.logo {
   margin-left: 200px;
 }
 
-/*All images of the tributes*/
+/*This styles the images of the tributes*/
 .tribute-image {
   height: 90px;
   width: 90px;
 }
 
-/*The grid of the 24 tributes in the reaping*/
+/*This styles the grid of the 24 tributes in the reaping*/
 .reaping {
   position: absolute;
   margin-top: 100px;
@@ -72,7 +72,7 @@ img.logo {
   text-align: center;
 }
 
-/*The names of the tributes*/
+/*This styles the names of the tributes*/
 .tribute-name {
   color: #fff;
   font-size: 11px;
@@ -82,7 +82,7 @@ img.logo {
   word-wrap: break-word;
 }
 
-/*The proceed button*/
+/*This styles the proceed button*/
 .proceed-button {
   margin-left: 455px;
   margin-top: 775px;
@@ -94,7 +94,7 @@ img.logo {
   color: #ffcf27;
 }
 
-/*The names of the districts*/
+/*This styles the names of the districts*/
 .district-name {
   color: #fff;
   font-size: 16px;
@@ -157,7 +157,7 @@ img.logo {
   color: #ffcf27;
 }
 
-/*Used to make cookie's names orange*/
+/*This makes the cookie's names orange*/
 strong {
   font-weight: bold;
   color: rgb(251, 130, 0);
@@ -183,7 +183,7 @@ button:hover {
   text-decoration: underline;
 }
 
-/*The long wall of text that teaches the user what to do*/
+/*This styles the block of text that teaches the user what to do*/
 .info-box {
   position: absolute;
   margin-top: 20px;
@@ -197,7 +197,7 @@ button:hover {
   width: 700px;
 }
 
-/*All of these style the form the user uses to update the tribute's properties*/
+/*All of the code below styles the form the user uses to update the tribute's properties*/
 .theform{
   margin-top: 0px;
 }

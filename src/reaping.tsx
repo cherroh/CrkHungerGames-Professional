@@ -1,4 +1,4 @@
-//reaping.tsx displays the tributes in a grid
+// reaping.tsx displays the tributes in a grid
 
 import React from 'react';
 import './App.css';
@@ -10,7 +10,7 @@ interface ReapingProps {
 
 function Reaping({ cookies }: ReapingProps): React.ReactElement {
 
-  //generate the form that allows the user to change properties in the cookie array
+  // Generate the form that allows the user to change properties in the cookie array
   return (
     <div className="reaping">
       <table>

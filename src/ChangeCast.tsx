@@ -1,11 +1,11 @@
-//ChangeCast.tsx generates the forms the user uses to change the default cookie array
+// ChangeCast.tsx generates the forms the user uses to change the default cookie array
 
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { CookieType } from './tributes';
 
 function ChangeCast({ cookies, setCookies }: { readonly cookies: CookieType[], readonly setCookies: React.Dispatch<React.SetStateAction<CookieType[]>> }) {
-    //state that manages the forms
-    //it works because the user can only update 1 cookie at a time
+    // State that manages the forms
+    // It works because the user can only update 1 cookie at a time
     const [cookieForms, setCookieForms] = useState(
         cookies.map((cookie) => ({
             newName: cookie.name,
@@ -15,7 +15,7 @@ function ChangeCast({ cookies, setCookies }: { readonly cookies: CookieType[], r
         }))
     );
 
-    //function that handles the change in a cookie's property
+    // Function that handles the change in a cookie's property
     const handleUpdateCookie = (index: number) => {
         return () => {
             const updatedCookies = [...cookies];
@@ -40,7 +40,7 @@ function ChangeCast({ cookies, setCookies }: { readonly cookies: CookieType[], r
         };
     };
 
-    //function that handles the user's request to change a cookie's property
+    // Function that handles the user's request to change a cookie's property
     const handleInputChange = (index: number, field: string) => {
         return (e: ChangeEvent<HTMLInputElement>) => {
             const value = e.target.value;

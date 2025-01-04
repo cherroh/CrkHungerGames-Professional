@@ -98,7 +98,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
             } else if (randomProbability < 0.6) {
                 taunt(); // 10% chance
             } else if (randomProbability < 0.8) {
-                selfDeath(); // 20% chance
+                selfEliminate(); // 20% chance
             } else if (randomProbability < 0.9) {
                 steal(); // 10% chance
             } else if (randomProbability < 1) {
@@ -118,7 +118,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
             } else if (randomProbability < 0.45) {
                 taunt(); // 10% chance
             } else if (randomProbability < 0.6) {
-                selfDeath(); // 15% chance
+                selfEliminate(); // 15% chance
             } else if (randomProbability < 0.8) {
                 steal(); // 20% chance
             } else if (randomProbability < 1) {
@@ -144,15 +144,12 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
     }
 
     function sleep() {
-        // Array of possible goof-off events
+        // Array of possible sleep events
         const events = [
-            "cries in their sleep",
-            "dreams about Frost Flop losing the Hunger Games",
-            "dreams about the worst update of them all: the Triple Cone Cup",
-            "dreams about the most pay-to-win update of them all: Stardust",
-            "gets a rash due to their sleeping bag",
-            "disarms an explosive that was hidden in their sleeping bag",
-            "pretends to sleep and secretly snorts illegal rainbow sugar cubes"
+            "has a nightmare",
+            "sleeps well",
+            "dreams about their family",
+            "is fast asleep"
         ];
 
         const randomEventIndex = Math.floor(Math.random() * events.length); // Randomly select an event index
@@ -209,47 +206,34 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
         const weaponMessages: { [key: string]: string } = {
             "stick": "finds a stick on the ground, then decides to use it as a weapon",
             "shovel": "finds a shovel, then decides to use it as a weapon",
-            "axe": "creates a robust axe",
+            "axe": "finds an axe, then decides to use it as a weapon",
             "knife": "finds knives laying around and takes them",
             "sword": "finds a sword",
             "spear": "creates a spear",
             "bow": "finds a bow and some arrows",
-            "gun": "finds a gun, well things are about to get violent",
+            "gun": "finds a gun",
             "landmines": "finds some unused landmines",
             "bombs": "finds some bombs"
         };
 
         const noWeaponEvents = [
-            "strangles {target}",
-            "and {target} engage in a fist fight",
-            "bashes {target}'s head into a rock several times",
-            "twists {target}'s neck",
-            "sneaks up on {target} and beats them up"
+            "attacks {target}",
+            "ambushes {target}",
+            "challenges {target} to a duel and wins",
+            "sneaks up on {target} and attacks"
         ];
 
         const meleeEvents = [
-            "stabs {target} with a {weapon}",
-            "slashes {target} with a {weapon}",
-            "slaps {target} with a {weapon}",
-            "impales {target} with a {weapon}",
-            "shoves a {weapon} up {target}'s abdomen",
-            "sneaks behind {target} and stabs them with a {weapon}",
-            "taunts {target}, then impales them with a {weapon}",
-            "taunts {target}, then stabs them with a {weapon}"
+            "hits {target} with a {weapon}"
         ];
 
         const rangedEvents = [
-            "shoots {target} with a {weapon}",
-            "snipes {target} with a {weapon}",
-            "taunts {target}, then shoots them with a {weapon}"
+            "aims a {weapon} at {target} and fires"
         ];
 
         const explosiveEvents = [
-            "blows up {target} with {weapon}",
             "detonates {weapon} near {target}",
-            "throws {weapon} at {target} and it explodes",
-            "throws {weapon} at {target}'s face and it explodes",
-            "hides {weapon} in {target}'s pants and it explodes"
+            "throws {weapon} at {target} and it explodes"
         ];
 
         const weaponClasses = {
@@ -431,7 +415,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
                                 <>
                                     {', '}
                                     <strong>{damagedCookie.name}</strong>
-                                    {' dies'}
+                                    {' is eliminated'}
                                 </>
                             ) : (
                                 <>
@@ -443,7 +427,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
                         </>
                     );
 
-                    // If cookie dies during feast, remove them
+                    // If cookie is eliminated during feast, remove them
                     if (damagedCookie.health <= 0) {
                         damagedCookie.isAlive = false;
                         const index = cookieArray.findIndex(cookie => cookie.name === damagedCookie.name);
@@ -506,42 +490,22 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
 
         // Possible text outputs for duels
         const noWeaponEvents = [
-            "holds {target}'s head under a lake",
-            "holds {target}'s head under a river",
-            "strangles {target}",
-            "and {target} engage in a fist fight",
-            "bashes {target}'s head into a rock several times",
-            "twists {target}'s neck",
-            "pushes {target} off a cliff",
-            "sneaks up on {target} and beats them up",
-            "grabs {target}'s head and yanks on it",
-            "smashes {target}'s head into a tree",
-            "takes a bite out of {target}"
+            "attacks {target}",
+            "ambushes {target}",
+            "sneaks up on {target} and attacks"
         ];
 
         const meleeEvents = [
-            "stabs {target} with a {weapon}",
-            "slashes {target} with a {weapon}",
-            "slaps {target} with a {weapon}",
-            "impales {target} with a {weapon}",
-            "shoves a {weapon} up {target}'s abdomen",
-            "sneaks behind {target} and stabs them with a {weapon}",
-            "taunts {target}, then impales them with a {weapon}",
-            "taunts {target}, then stabs them with a {weapon}"
+            "hits {target} with a {weapon}"
         ];
 
         const rangedEvents = [
-            "shoots {target} with a {weapon}",
-            "snipes {target} with a {weapon}",
-            "taunts {target}, then shoots them with a {weapon}"
+            "aims a {weapon} at {target} and fires"
         ];
 
         const explosiveEvents = [
-            "blows up {target} with {weapon}",
             "detonates {weapon} near {target}",
-            "throws {weapon} at {target} and it explodes",
-            "throws {weapon} at {target}'s face and it explodes",
-            "hides {weapon} in {target}'s pants and it explodes"
+            "throws {weapon} at {target} and it explodes"
         ];
 
         const weaponClasses = {
@@ -550,18 +514,18 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
             "explosives": ["landmines", "bombs"]
         };
 
-        let randomIndexCookie2 = Math.floor(Math.random() * cookieArray.length); // Get a random index for the cookie to be killed
-        let randomCookie2 = cookieArray[randomIndexCookie2]; // Get the killed cookie
+        let randomIndexCookie2 = Math.floor(Math.random() * cookieArray.length); // Get a random index for the cookie to be attacked
+        let randomCookie2 = cookieArray[randomIndexCookie2]; // Get the attacked cookie
 
-        let randomIndexCookie1; // Initialize variable for killer index
-        let randomCookie1; // Initialize variable for killer cookie
+        let randomIndexCookie1; // Initialize variable for attacker index
+        let randomCookie1; // Initialize variable for attacker cookie
 
-        do { // Loop until a different cookie is selected as the killer
-            randomIndexCookie1 = Math.floor(Math.random() * cookieArray.length); // Get a random index for the killer cookie
-            randomCookie1 = cookieArray[randomIndexCookie1]; // Get the killer cookie
-        } while (randomCookie2 === randomCookie1); // Repeat loop if same cookie is selected as both killed and killer
+        do { // Loop until a different cookie is selected as the attacker
+            randomIndexCookie1 = Math.floor(Math.random() * cookieArray.length); // Get a random index for the attacker cookie
+            randomCookie1 = cookieArray[randomIndexCookie1]; // Get the attacker cookie
+        } while (randomCookie2 === randomCookie1); // Repeat loop if same cookie is selected as both attacked and attacker
 
-        randomCookie2.health -= randomCookie1.damage; // Reduce health of the killed cookie by killer's damage
+        randomCookie2.health -= randomCookie1.damage; // Reduce health of the attacked cookie by attacker's damage
 
         // Manage weapons
         let eventMessage = "";
@@ -592,7 +556,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
                 .replace("{weapon}", randomCookie1.weapon);
         }
 
-        // Output wether attacked cookie survives or dies
+        // Output wether attacked cookie survives or is eliminated
         let result = (
             <>
                 <strong>{randomCookie1.name}</strong> {eventMessage}
@@ -600,7 +564,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
                     <>
                         {', '}
                         <strong>{randomCookie2.name}</strong>
-                        {' dies'}
+                        {' is eliminated'}
                     </>
                 ) : (
                     <>
@@ -612,9 +576,9 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
             </>
         );
 
-        if (randomCookie2.health <= 0) { // Check if the killed cookie is dead
-            randomCookie2.isAlive = false; // Mark killed cookie as not alive
-            cookieArray.splice(randomIndexCookie2, 1); // Remove the killed cookie from the array
+        if (randomCookie2.health <= 0) { // Check if the attacked cookie is eliminated
+            randomCookie2.isAlive = false; // Mark attacked cookie as not alive
+            cookieArray.splice(randomIndexCookie2, 1); // Remove the attacked cookie from the array
         }
 
         setOutput(prevResults => [ // Update simulation output with duel result
@@ -648,12 +612,12 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
         const weaponMessages: { [key: string]: string } = {
             "stick": "finds a stick on the ground, then decides to use it as a weapon",
             "shovel": "finds a shovel, then decides to use it as a weapon",
-            "axe": "creates a robust axe",
+            "axe": "finds an axe, then decides to use it as a weapon",
             "knife": "finds knives laying around and takes them",
             "sword": "finds a sword",
             "spear": "creates a spear",
             "bow": "finds a bow and some arrows",
-            "gun": "finds a gun, well things are about to get violent",
+            "gun": "finds a gun",
             "landmines": "finds some unused landmines",
             "bombs": "finds some bombs"
         };
@@ -694,12 +658,12 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
         // Array of possible supplies with their health benefits
         const supplies = [
             { supplyName: "unknown sponsor", healthBenefit: 50 },
-            { supplyName: "illegal rainbow sugar cubes", healthBenefit: 50 }
+            { supplyName: "medical supplies", healthBenefit: 50 }
         ];
 
         const supplyMessages: { [key: string]: string } = {
             "unknown sponsor": "receives supplies from an unknown sponsor",
-            "illegal rainbow sugar cubes": "receives illegal rainbow sugar cubes and snorts them"
+            "medical supplies": "receives medical supplies from a sponsor"
         };
 
         const randomSupplyIndex = Math.floor(Math.random() * supplies.length); // Randomly select a supply index
@@ -736,10 +700,10 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
     function taunt() {
         // Array of possible taunt events
         const events = [
-            "flips off {target} and runs away",
             "makes fun of {target}",
-            "trips {target} and laughs at them",
-            "uses pepper spray on {target} and laughs at them",
+            "trips {target} and laughs",
+            "taunts {target}",
+            "provokes {target}",
             "insults {target}"
         ];
 
@@ -789,35 +753,29 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
         setCookieArray([...cookieArray]); // Update the state with the modified array to trigger a re-render
     }
 
-    function selfDeath() {
+    function selfEliminate() {
         // Possible accidental events with different amounts of damage
         const events = [
             { eventName: "landmine", damage: 70 },
             { eventName: "pit", damage: 20 },
             { eventName: "trips", damage: 10 },
             { eventName: "frozen lake", damage: 40 },
-            { eventName: "tree branch", damage: 50 },
             { eventName: "spoiled food", damage: 20 },
             { eventName: "poisoned food", damage: 30 },
-            { eventName: "bear trap", damage: 50 },
             { eventName: "infection", damage: 20 },
-            { eventName: "tree fall", damage: 20 },
-            { eventName: "electric fence", damage: 50 }
+            { eventName: "tree fall", damage: 20 }
         ];
 
         // Possible text output for accidental events
         const eventMessages: { [key: string]: string } = {
             "landmine": "accidentally steps on a landmine",
             "pit": "falls into a pit",
-            "trips": "trips like an idiot",
+            "trips": "trips",
             "frozen lake": "falls into a frozen lake",
-            "tree branch": "gets impaled by a tree branch",
             "spoiled food": "found spoiled food and ate it",
             "poisoned food": "sneaks into someone’s food stash, but the food was poisoned",
-            "bear trap": "is caught in a bear trap",
             "infection": "suffers from an infection",
-            "tree fall": "climbs a tree but falls",
-            "electric fence": "attempts to escape the arena, only to be met with an electric fence"
+            "tree fall": "climbs a tree but falls"
         };
 
         const randomEventIndex = Math.floor(Math.random() * events.length); // Randomly select an event index
@@ -835,7 +793,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
                     <>
                         {', '}
                         <strong>{randomCookie1.name}</strong>
-                        {' dies'}
+                        {' is eliminated'}
                     </>
                 ) : (
                     <>
@@ -847,7 +805,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
             </>
         );
 
-        if (randomCookie1.health <= 0) { // Check if the hurt cookie is dead
+        if (randomCookie1.health <= 0) { // Check if the hurt cookie is eliminated
             randomCookie1.isAlive = false; // Mark hurt cookie as not alive
             cookieArray.splice(randomIndexCookie1, 1); // Remove the hurt cookie from the array
         }
@@ -929,16 +887,10 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
             "camouflages themself in the bushes",
             "constructs a hut made out of grass",
             "creates a stick made out of sticks, it's useless though",
-            "creates a robust axe made out of grass, it's a failure",
-            "fishes, unfortunately all the fish are fishgato",
+            "creates a shield made out of grass, it's useless",
             "does absolutely nothing for 10 minutes",
-            "privately takes out their smuggled illegal rainbow cubes and snorts them",
-            "starts a fire but it spreads a bit too much",
-            "lights the forest on fire for literally no good reason",
             "looks a bit green, due to an infection",
-            "thinks about how bad frost flop is",
-            "commits arson in the forest",
-            "catches a fish, unfortunately it's fishgato"
+            "fools around"
         ];
 
         const randomEventIndex = Math.floor(Math.random() * events.length); // Randomly select an event index
@@ -970,42 +922,22 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
 
         // Possible text outputs for duels
         const noWeaponEvents = [
-            "holds {target}'s head under a lake",
-            "holds {target}'s head under a river",
-            "strangles {target}",
-            "and {target} engage in a fist fight",
-            "bashes {target}'s head into a rock several times",
-            "twists {target}'s neck",
-            "pushes {target} off a cliff",
-            "sneaks up on {target} and beats them up",
-            "grabs {target}'s head and yanks on it",
-            "smashes {target}'s head into a tree",
-            "takes a bite out of {target}"
+            "attacks {target}",
+            "ambushes {target}",
+            "sneaks up on {target} and attacks"
         ];
 
         const meleeEvents = [
-            "stabs {target} with a {weapon}",
-            "slashes {target} with a {weapon}",
-            "slaps {target} with a {weapon}",
-            "impales {target} with a {weapon}",
-            "shoves a {weapon} up {target}'s abdomen",
-            "sneaks behind {target} and stabs them with a {weapon}",
-            "taunts {target}, then impales them with a {weapon}",
-            "taunts {target}, then stabs them with a {weapon}"
+            "hits {target} with a {weapon}"
         ];
 
         const rangedEvents = [
-            "shoots {target} with a {weapon}",
-            "snipes {target} with a {weapon}",
-            "taunts {target}, then shoots them with a {weapon}"
+            "aims a {weapon} at {target} and fires"
         ];
 
         const explosiveEvents = [
-            "blows up {target} with {weapon}",
             "detonates {weapon} near {target}",
-            "throws {weapon} at {target} and it explodes",
-            "throws {weapon} at {target}'s face and it explodes",
-            "hides {weapon} in {target}'s pants and it explodes"
+            "throws {weapon} at {target} and it explodes"
         ];
 
         const weaponClasses = {
@@ -1014,19 +946,19 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
             "explosives": ["landmines", "bombs"]
         };
 
-        let randomIndexCookie2 = Math.floor(Math.random() * cookieArray.length); // Get a random index for the cookie to be killed
-        let randomCookie2 = cookieArray[randomIndexCookie2]; // Get the killed cookie
+        let randomIndexCookie2 = Math.floor(Math.random() * cookieArray.length); // Get a random index for the cookie to be attacked
+        let randomCookie2 = cookieArray[randomIndexCookie2]; // Get the attacked cookie
 
-        let randomIndexCookie1; // Initialize variable for killer index
-        let randomCookie1; // Initialize variable for killer cookie
+        let randomIndexCookie1; // Initialize variable for attacker index
+        let randomCookie1; // Initialize variable for attacker cookie
 
-        do { // Loop until a different cookie is selected as the killer
-            randomIndexCookie1 = Math.floor(Math.random() * cookieArray.length); // Get a random index for the killer cookie
-            randomCookie1 = cookieArray[randomIndexCookie1]; // Get the killer cookie
-        } while (randomCookie2 === randomCookie1); // Repeat loop if same cookie is selected as both killed and killer
+        do { // Loop until a different cookie is selected as the attacker
+            randomIndexCookie1 = Math.floor(Math.random() * cookieArray.length); // Get a random index for the attacker cookie
+            randomCookie1 = cookieArray[randomIndexCookie1]; // Get the attacker cookie
+        } while (randomCookie2 === randomCookie1); // Repeat loop if same cookie is selected as both attacked and attacker
 
         let calculatedDamage: number = randomCookie1.damage / 2;
-        randomCookie2.health -= calculatedDamage; // Reduce health of the killed cookie by killer's damage
+        randomCookie2.health -= calculatedDamage; // Reduce health of the attacked cookie by attacker's damage
 
         let eventMessage = "";
         if (!randomCookie1.weapon || randomCookie1.weapon === "none") {
@@ -1064,7 +996,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
                     <>
                         {', '}
                         <strong>{randomCookie2.name}</strong>
-                        {' dies'}
+                        {' is eliminated'}
                     </>
                 ) : (
                     <>
@@ -1076,9 +1008,9 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
             </>
         );
 
-        if (randomCookie2.health <= 0) { // Check if the killed cookie is dead
-            randomCookie2.isAlive = false; // Mark killed cookie as not alive
-            cookieArray.splice(randomIndexCookie2, 1); // Remove the killed cookie from the array
+        if (randomCookie2.health <= 0) { // Check if the attacked cookie is eliminated
+            randomCookie2.isAlive = false; // Mark attacked cookie as not alive
+            cookieArray.splice(randomIndexCookie2, 1); // Remove the attacked cookie from the array
         }
 
         setOutput(prevResults => [ // Update simulation output with duel result

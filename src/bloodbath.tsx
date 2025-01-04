@@ -2,16 +2,16 @@
 
 import React, { useState } from 'react';
 import './App.css';
-import { CookieType } from './tributes';
+import { TributeType } from './tributes';
 
 interface ReapingProps {
-    cookies: CookieType[]; // Define the type for the cookies array
+    tributes: TributeType[]; // Define the type for the tributes array
 }
 
-function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
-    const [cookieArray, setCookieArray] = useState(cookies); // Initialize state for cookie array
+function Bloodbath({ tributes }: ReapingProps): React.ReactElement {
+    const [tributeArray, setTributeArray] = useState(tributes); // Initialize state for tribute array
     const [simulationReady, setSimulationReady] = useState(true); // Initialize state for simulation readiness
-    const [output, setOutput] = useState<{ Cookie1: string; Cookie2: string; result: React.ReactNode; }[]>([]); // Initialize state for simulation output
+    const [output, setOutput] = useState<{ Tribute1: string; Tribute2: string; result: React.ReactNode; }[]>([]); // Initialize state for simulation output
 
     function beginSimulation() {
         setSimulationReady(false); // Set simulation readiness state to false
@@ -19,12 +19,12 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
         let daysCounter = 1; // Initialize the days counter outside the loop
         let time = "Day";
 
-        // This is the main game loop, continue game until only one cookie is the winner
-        while (cookieArray.length > 2) { // Loop until only one cookie remains in the array
-            if (actions % 120 === 0 && cookieArray.length > 4) { // Check if it's the 7th day
+        // This is the main game loop, continue game until only one tribute is the winner
+        while (tributeArray.length > 2) { // Loop until only one tribute remains in the array
+            if (actions % 120 === 0 && tributeArray.length > 4) { // Check if it's the 7th day
                 feast(actions); // Call feast function on every 7th day
             }
-            if (actions % 20 === 0 && cookieArray.length > 2) { // Check if it's the 7th day
+            if (actions % 20 === 0 && tributeArray.length > 2) { // Check if it's the 7th day
                 if (actions > 0) {
                     if (time === "Night") { // Check if it's night to increment days
                         daysCounter++;
@@ -37,7 +37,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
                 }
                 displayDay(daysCounter, time);
             }
-            if (cookieArray.length > 1 && cookieArray.length > 2) {
+            if (tributeArray.length > 1 && tributeArray.length > 2) {
                 selectEvent(time); // Perform a simulation step
                 actions++; // Increment the days counter
             }
@@ -46,7 +46,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
         // Manage the final duel
         time = "Finale";
         displayDay(daysCounter, time);
-        while (cookieArray.length > 1) {
+        while (tributeArray.length > 1) {
             selectEvent(time);
         }
 
@@ -78,8 +78,8 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
         setOutput(prevResults => [
             ...prevResults,
             {
-                Cookie1: "empty",
-                Cookie2: "empty",
+                Tribute1: "empty",
+                Tribute2: "empty",
                 result: result
             }
         ]);
@@ -155,29 +155,29 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
         const randomEventIndex = Math.floor(Math.random() * events.length); // Randomly select an event index
         const randomEvent = events[randomEventIndex]; // Get the selected event
 
-        const randomIndexCookie1 = Math.floor(Math.random() * cookieArray.length); // Get a random index for the cookie to goof off
-        const randomCookie1 = cookieArray[randomIndexCookie1]; // Get the goofing off cookie
+        const randomIndexTribute1 = Math.floor(Math.random() * tributeArray.length); // Get a random index for the tribute to goof off
+        const randomTribute1 = tributeArray[randomIndexTribute1]; // Get the goofing off tribute
 
         let result: React.ReactNode = (
             <>
-                <strong>{randomCookie1.name}</strong> {randomEvent}
+                <strong>{randomTribute1.name}</strong> {randomEvent}
             </>
         );
 
         setOutput(prevResults => [ // Update simulation output with the event result
             ...prevResults,
             {
-                Cookie1: randomCookie1.picture,
-                Cookie2: "empty",
+                Tribute1: randomTribute1.picture,
+                Tribute2: "empty",
                 result: result
             }
         ]);
 
-        setCookieArray([...cookieArray]); // Update the state with the modified array to trigger a re-render
+        setTributeArray([...tributeArray]); // Update the state with the modified array to trigger a re-render
     }
 
-    // Every attribute a cookie should have
-    type CookieType = {
+    // Every attribute a tribute should have
+    type TributeType = {
         name: string;
         health: number;
         damage: number;
@@ -253,48 +253,48 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
             setOutput(prevResults => [
                 ...prevResults,
                 {
-                    Cookie1: "empty",
-                    Cookie2: "empty",
+                    Tribute1: "empty",
+                    Tribute2: "empty",
                     result: result
                 }
             ]);
         }
 
-        // Choose which cookies attend the feast
-        const feastCookies = cookieArray.filter(_ => Math.random() < 0.5);
+        // Choose which tributes attend the feast
+        const feastTributes = tributeArray.filter(_ => Math.random() < 0.5);
 
         // Feast safety checks and edge cases
         if (actions > 0) {
-            if (feastCookies.length < 2) {
+            if (feastTributes.length < 2) {
                 let result2: React.ReactNode = (
                     <div className="feastlabel">
-                        The Feast Ends (No Cookies Attended the Feast)
+                        The Feast Ends (No Tributes Attended the Feast)
                     </div>
                 );
 
                 setOutput(prevResults => [
                     ...prevResults,
                     {
-                        Cookie1: "empty",
-                        Cookie2: "empty",
+                        Tribute1: "empty",
+                        Tribute2: "empty",
                         result: result2
                     }
                 ]);
                 return;
             }
         } else {
-            if (feastCookies.length < 2) {
+            if (feastTributes.length < 2) {
                 let result2: React.ReactNode = (
                     <div className="feastlabel">
-                        The Bloodbath Ends (All Cookies Left the Area Immediately)
+                        The Bloodbath Ends (All Tributes Left the Area Immediately)
                     </div>
                 );
 
                 setOutput(prevResults => [
                     ...prevResults,
                     {
-                        Cookie1: "empty",
-                        Cookie2: "empty",
+                        Tribute1: "empty",
+                        Tribute2: "empty",
                         result: result2
                     }
                 ]);
@@ -302,20 +302,20 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
             }
         }
 
-        // Manage cookies who did not attend the feast
-        const leftFeastCookies = cookieArray.filter(cookie => !feastCookies.includes(cookie));
+        // Manage tributes who did not attend the feast
+        const leftFeastTributes = tributeArray.filter(tribute => !feastTributes.includes(tribute));
 
-        leftFeastCookies.forEach(currentCookie => {
+        leftFeastTributes.forEach(currentTribute => {
             let result2: React.ReactNode = (
                 <>
-                    <strong>{currentCookie.name}</strong> runs away and leaves the cornucopia
+                    <strong>{currentTribute.name}</strong> runs away and leaves the cornucopia
                 </>
             );
 
             if (actions > 0) {
                 result2 = (
                     <>
-                        <strong>{currentCookie.name}</strong> doesn't attend the feast
+                        <strong>{currentTribute.name}</strong> doesn't attend the feast
                     </>
                 );
             }
@@ -323,71 +323,71 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
             setOutput(prevResults => [
                 ...prevResults,
                 {
-                    Cookie1: currentCookie.picture,
-                    Cookie2: "empty",
+                    Tribute1: currentTribute.picture,
+                    Tribute2: "empty",
                     result: result2
                 }
             ]);
         });
 
         // Manage event outcomes
-        feastCookies.forEach(currentCookie => {
-            if (currentCookie.isAlive) {
+        feastTributes.forEach(currentTribute => {
+            if (currentTribute.isAlive) {
                 const outcome = Math.random();
-                if (outcome < 0.33) { // 33% a cookie grabs supplies
-                    currentCookie.health += 50;
+                if (outcome < 0.33) { // 33% a tribute grabs supplies
+                    currentTribute.health += 50;
                     setOutput(prevResults => [
                         ...prevResults,
                         {
-                            Cookie1: currentCookie.picture,
-                            Cookie2: "empty",
-                            result: <><strong>{currentCookie.name}</strong> grabs some supplies</>
+                            Tribute1: currentTribute.picture,
+                            Tribute2: "empty",
+                            result: <><strong>{currentTribute.name}</strong> grabs some supplies</>
                         }
                     ]);
                 }
-                else if (outcome < 0.67) { // 33% chance a cookie grabs a weapon
+                else if (outcome < 0.67) { // 33% chance a tribute grabs a weapon
                     const randomWeaponIndex = Math.floor(Math.random() * weapons.length);
                     const randomWeapon = weapons[randomWeaponIndex];
 
-                    currentCookie.damage += randomWeapon.weaponDamage;
-                    currentCookie.weapon = randomWeapon.weaponName;
+                    currentTribute.damage += randomWeapon.weaponDamage;
+                    currentTribute.weapon = randomWeapon.weaponName;
 
                     const weaponMessage = weaponMessages[randomWeapon.weaponName];
                     let result: React.ReactNode = (
                         <>
-                            <strong>{currentCookie.name}</strong> {weaponMessage}
+                            <strong>{currentTribute.name}</strong> {weaponMessage}
                         </>
                     );
 
                     setOutput(prevResults => [
                         ...prevResults,
                         {
-                            Cookie1: currentCookie.picture,
-                            Cookie2: "empty",
+                            Tribute1: currentTribute.picture,
+                            Tribute2: "empty",
                             result: result
                         }
                     ]);
-                } else { // 33% chance a cookie gets hurt
-                    let damagedCookie: CookieType | undefined;
+                } else { // 33% chance a tribute gets hurt
+                    let damagedTribute: TributeType | undefined;
                     do {
-                        damagedCookie = feastCookies.filter(cookie => cookie !== currentCookie)[Math.floor(Math.random() * (feastCookies.length - 1))];
-                    } while (damagedCookie && !damagedCookie.isAlive);
+                        damagedTribute = feastTributes.filter(tribute => tribute !== currentTribute)[Math.floor(Math.random() * (feastTributes.length - 1))];
+                    } while (damagedTribute && !damagedTribute.isAlive);
 
-                    if (!damagedCookie) {
+                    if (!damagedTribute) {
                         alert("the website broke");
                         window.location.reload();
                     }
 
-                    damagedCookie.health -= currentCookie.damage;
+                    damagedTribute.health -= currentTribute.damage;
 
                     let eventMessage = "";
-                    if (!currentCookie.weapon || currentCookie.weapon === "none") {
+                    if (!currentTribute.weapon || currentTribute.weapon === "none") {
                         const randomEventIndex = Math.floor(Math.random() * noWeaponEvents.length);
-                        eventMessage = noWeaponEvents[randomEventIndex].replace("{target}", damagedCookie.name);
+                        eventMessage = noWeaponEvents[randomEventIndex].replace("{target}", damagedTribute.name);
                     } else {
                         let weaponClass: keyof typeof weaponClasses = "melee";
                         for (let key in weaponClasses) {
-                            if (weaponClasses[key as keyof typeof weaponClasses].includes(currentCookie.weapon)) {
+                            if (weaponClasses[key as keyof typeof weaponClasses].includes(currentTribute.weapon)) {
                                 weaponClass = key as keyof typeof weaponClasses;
                                 break;
                             }
@@ -404,51 +404,51 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
 
                         const randomEventIndex = Math.floor(Math.random() * eventArray.length);
                         eventMessage = eventArray[randomEventIndex]
-                            .replace("{target}", damagedCookie.name)
-                            .replace("{weapon}", currentCookie.weapon);
+                            .replace("{target}", damagedTribute.name)
+                            .replace("{weapon}", currentTribute.weapon);
                     }
 
                     let result = (
                         <>
-                            <strong>{currentCookie.name}</strong> {eventMessage}
-                            {damagedCookie.health <= 0 ? (
+                            <strong>{currentTribute.name}</strong> {eventMessage}
+                            {damagedTribute.health <= 0 ? (
                                 <>
                                     {', '}
-                                    <strong>{damagedCookie.name}</strong>
+                                    <strong>{damagedTribute.name}</strong>
                                     {' is eliminated'}
                                 </>
                             ) : (
                                 <>
                                     {', '}
-                                    <strong>{damagedCookie.name}</strong>
+                                    <strong>{damagedTribute.name}</strong>
                                     {' survives'}
                                 </>
                             )}
                         </>
                     );
 
-                    // If cookie is eliminated during feast, remove them
-                    if (damagedCookie.health <= 0) {
-                        damagedCookie.isAlive = false;
-                        const index = cookieArray.findIndex(cookie => cookie.name === damagedCookie.name);
+                    // If tribute is eliminated during feast, remove them
+                    if (damagedTribute.health <= 0) {
+                        damagedTribute.isAlive = false;
+                        const index = tributeArray.findIndex(tribute => tribute.name === damagedTribute.name);
                         if (index !== -1) {
-                            cookieArray.splice(index, 1);
+                            tributeArray.splice(index, 1);
                         }
                     }
 
                     setOutput(prevResults => [
                         ...prevResults,
                         {
-                            Cookie1: currentCookie.picture,
-                            Cookie2: damagedCookie.picture,
+                            Tribute1: currentTribute.picture,
+                            Tribute2: damagedTribute.picture,
                             result: result
                         }
                     ]);
 
-                    setCookieArray([...feastCookies]);
+                    setTributeArray([...feastTributes]);
                 }
             }
-            setCookieArray([...feastCookies]);
+            setTributeArray([...feastTributes]);
         });
 
         // End the feast
@@ -462,8 +462,8 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
             setOutput(prevResults => [
                 ...prevResults,
                 {
-                    Cookie1: "empty",
-                    Cookie2: "empty",
+                    Tribute1: "empty",
+                    Tribute2: "empty",
                     result: result2
                 }
             ]);
@@ -477,8 +477,8 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
             setOutput(prevResults => [
                 ...prevResults,
                 {
-                    Cookie1: "empty",
-                    Cookie2: "empty",
+                    Tribute1: "empty",
+                    Tribute2: "empty",
                     result: result2
                 }
             ]);
@@ -514,28 +514,28 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
             "explosives": ["landmines", "bombs"]
         };
 
-        let randomIndexCookie2 = Math.floor(Math.random() * cookieArray.length); // Get a random index for the cookie to be attacked
-        let randomCookie2 = cookieArray[randomIndexCookie2]; // Get the attacked cookie
+        let randomIndexTribute2 = Math.floor(Math.random() * tributeArray.length); // Get a random index for the tribute to be attacked
+        let randomTribute2 = tributeArray[randomIndexTribute2]; // Get the attacked tribute
 
-        let randomIndexCookie1; // Initialize variable for attacker index
-        let randomCookie1; // Initialize variable for attacker cookie
+        let randomIndexTribute1; // Initialize variable for attacker index
+        let randomTribute1; // Initialize variable for attacker tribute
 
-        do { // Loop until a different cookie is selected as the attacker
-            randomIndexCookie1 = Math.floor(Math.random() * cookieArray.length); // Get a random index for the attacker cookie
-            randomCookie1 = cookieArray[randomIndexCookie1]; // Get the attacker cookie
-        } while (randomCookie2 === randomCookie1); // Repeat loop if same cookie is selected as both attacked and attacker
+        do { // Loop until a different tribute is selected as the attacker
+            randomIndexTribute1 = Math.floor(Math.random() * tributeArray.length); // Get a random index for the attacker tribute
+            randomTribute1 = tributeArray[randomIndexTribute1]; // Get the attacker tribute
+        } while (randomTribute2 === randomTribute1); // Repeat loop if same tribute is selected as both attacked and attacker
 
-        randomCookie2.health -= randomCookie1.damage; // Reduce health of the attacked cookie by attacker's damage
+        randomTribute2.health -= randomTribute1.damage; // Reduce health of the attacked tribute by attacker's damage
 
         // Manage weapons
         let eventMessage = "";
-        if (!randomCookie1.weapon || randomCookie1.weapon === "none") {
+        if (!randomTribute1.weapon || randomTribute1.weapon === "none") {
             const randomEventIndex = Math.floor(Math.random() * noWeaponEvents.length);
-            eventMessage = noWeaponEvents[randomEventIndex].replace("{target}", randomCookie2.name);
+            eventMessage = noWeaponEvents[randomEventIndex].replace("{target}", randomTribute2.name);
         } else {
             let weaponClass: keyof typeof weaponClasses = "melee";
             for (let key in weaponClasses) {
-                if (weaponClasses[key as keyof typeof weaponClasses].includes(randomCookie1.weapon)) {
+                if (weaponClasses[key as keyof typeof weaponClasses].includes(randomTribute1.weapon)) {
                     weaponClass = key as keyof typeof weaponClasses;
                     break;
                 }
@@ -552,45 +552,45 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
 
             const randomEventIndex = Math.floor(Math.random() * eventArray.length);
             eventMessage = eventArray[randomEventIndex]
-                .replace("{target}", randomCookie2.name)
-                .replace("{weapon}", randomCookie1.weapon);
+                .replace("{target}", randomTribute2.name)
+                .replace("{weapon}", randomTribute1.weapon);
         }
 
-        // Output wether attacked cookie survives or is eliminated
+        // Output wether attacked tribute survives or is eliminated
         let result = (
             <>
-                <strong>{randomCookie1.name}</strong> {eventMessage}
-                {randomCookie2.health <= 0 ? (
+                <strong>{randomTribute1.name}</strong> {eventMessage}
+                {randomTribute2.health <= 0 ? (
                     <>
                         {', '}
-                        <strong>{randomCookie2.name}</strong>
+                        <strong>{randomTribute2.name}</strong>
                         {' is eliminated'}
                     </>
                 ) : (
                     <>
                         {', '}
-                        <strong>{randomCookie2.name}</strong>
+                        <strong>{randomTribute2.name}</strong>
                         {' survives'}
                     </>
                 )}
             </>
         );
 
-        if (randomCookie2.health <= 0) { // Check if the attacked cookie is eliminated
-            randomCookie2.isAlive = false; // Mark attacked cookie as not alive
-            cookieArray.splice(randomIndexCookie2, 1); // Remove the attacked cookie from the array
+        if (randomTribute2.health <= 0) { // Check if the attacked tribute is eliminated
+            randomTribute2.isAlive = false; // Mark attacked tribute as not alive
+            tributeArray.splice(randomIndexTribute2, 1); // Remove the attacked tribute from the array
         }
 
         setOutput(prevResults => [ // Update simulation output with duel result
             ...prevResults,
             {
-                Cookie1: randomCookie1.picture,
-                Cookie2: randomCookie2.picture,
+                Tribute1: randomTribute1.picture,
+                Tribute2: randomTribute2.picture,
                 result: result
             }
         ]);
 
-        setCookieArray([...cookieArray]); // Update the state with the modified array to trigger a re-render
+        setTributeArray([...tributeArray]); // Update the state with the modified array to trigger a re-render
     }
 
     function grabWeapon() {
@@ -608,7 +608,7 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
             { weaponName: "bombs", weaponDamage: 50 },
         ];
 
-        // Possible text outputs when a cookie gets a weapon
+        // Possible text outputs when a tribute gets a weapon
         const weaponMessages: { [key: string]: string } = {
             "stick": "finds a stick on the ground, then decides to use it as a weapon",
             "shovel": "finds a shovel, then decides to use it as a weapon",
@@ -625,30 +625,30 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
         const randomWeaponIndex = Math.floor(Math.random() * weapons.length); // Randomly select a weapon index
         const randomWeapon = weapons[randomWeaponIndex]; // Get the selected weapon
 
-        const randomIndex = Math.floor(Math.random() * cookieArray.length); // Get a random index for selecting a cookie
-        const randomCookie = cookieArray[randomIndex]; // Get the selected cookie
+        const randomIndex = Math.floor(Math.random() * tributeArray.length); // Get a random index for selecting a tribute
+        const randomTribute = tributeArray[randomIndex]; // Get the selected tribute
 
-        randomCookie.damage += randomWeapon.weaponDamage; // Increase damage of the selected cookie by the weapon's damage
-        randomCookie.weapon = randomWeapon.weaponName; // Set the cookie's weapon to the selected weapon's name
+        randomTribute.damage += randomWeapon.weaponDamage; // Increase damage of the selected tribute by the weapon's damage
+        randomTribute.weapon = randomWeapon.weaponName; // Set the tribute's weapon to the selected weapon's name
 
-        setCookieArray(prevCookies => { // Update the state with the modified cookie array
-            const updatedCookies = [...prevCookies];
-            updatedCookies[randomIndex] = { ...randomCookie }; // Ensure immutability
-            return updatedCookies;
+        setTributeArray(prevTributes => { // Update the state with the modified tribute array
+            const updatedTributes = [...prevTributes];
+            updatedTributes[randomIndex] = { ...randomTribute }; // Ensure immutability
+            return updatedTributes;
         });
 
         const weaponMessage = weaponMessages[randomWeapon.weaponName];
         let result: React.ReactNode = (
             <>
-                <strong>{randomCookie.name}</strong> {weaponMessage}
+                <strong>{randomTribute.name}</strong> {weaponMessage}
             </>
         ); // Generate grab weapon result message with chosen weapon
 
         setOutput(prevResults => [ // Update simulation output with grab weapon result
             ...prevResults,
             {
-                Cookie1: randomCookie.picture,
-                Cookie2: "empty",
+                Tribute1: randomTribute.picture,
+                Tribute2: "empty",
                 result: result
             }
         ]);
@@ -669,29 +669,29 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
         const randomSupplyIndex = Math.floor(Math.random() * supplies.length); // Randomly select a supply index
         const randomSupply = supplies[randomSupplyIndex]; // Get the selected supply
 
-        const randomIndex = Math.floor(Math.random() * cookieArray.length); // Get a random index for selecting a cookie
-        const randomCookie = cookieArray[randomIndex]; // Get the selected cookie
+        const randomIndex = Math.floor(Math.random() * tributeArray.length); // Get a random index for selecting a tribute
+        const randomTribute = tributeArray[randomIndex]; // Get the selected tribute
 
-        randomCookie.health += randomSupply.healthBenefit; // Increase health of the selected cookie by the supply's health benefit
+        randomTribute.health += randomSupply.healthBenefit; // Increase health of the selected tribute by the supply's health benefit
 
-        setCookieArray(prevCookies => { // Update the state with the modified cookie array
-            const updatedCookies = [...prevCookies];
-            updatedCookies[randomIndex] = { ...randomCookie }; // Ensure immutability
-            return updatedCookies;
+        setTributeArray(prevTributes => { // Update the state with the modified tribute array
+            const updatedTributes = [...prevTributes];
+            updatedTributes[randomIndex] = { ...randomTribute }; // Ensure immutability
+            return updatedTributes;
         });
 
         const supplyMessage = supplyMessages[randomSupply.supplyName];
         let result: React.ReactNode = (
             <>
-                <strong>{randomCookie.name}</strong> {supplyMessage}
+                <strong>{randomTribute.name}</strong> {supplyMessage}
             </>
         ); // Generate grab supplies result message with chosen supply
 
         setOutput(prevResults => [ // Update simulation output with grab supplies result
             ...prevResults,
             {
-                Cookie1: randomCookie.picture,
-                Cookie2: "empty",
+                Tribute1: randomTribute.picture,
+                Tribute2: "empty",
                 result: result
             }
         ]);
@@ -710,16 +710,16 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
         const randomEventIndex = Math.floor(Math.random() * events.length); // Randomly select an event index
         const randomEvent = events[randomEventIndex]; // Get the selected event
 
-        let randomIndexCookie2 = Math.floor(Math.random() * cookieArray.length); // Get a random index for the cookie to be taunted
-        let randomCookie2 = cookieArray[randomIndexCookie2]; // Get the taunted cookie
+        let randomIndexTribute2 = Math.floor(Math.random() * tributeArray.length); // Get a random index for the tribute to be taunted
+        let randomTribute2 = tributeArray[randomIndexTribute2]; // Get the taunted tribute
 
-        let randomIndexCookie1; // Initialize variable for the taunter's index
-        let randomCookie1; // Initialize variable for the taunter cookie
+        let randomIndexTribute1; // Initialize variable for the taunter's index
+        let randomTribute1; // Initialize variable for the taunter tribute
 
-        do { // Loop until a different cookie is selected as the taunter
-            randomIndexCookie1 = Math.floor(Math.random() * cookieArray.length); // Get a random index for the taunter cookie
-            randomCookie1 = cookieArray[randomIndexCookie1]; // Get the taunter cookie
-        } while (randomCookie2 === randomCookie1); // Repeat loop if the same cookie is selected as both taunter and taunted
+        do { // Loop until a different tribute is selected as the taunter
+            randomIndexTribute1 = Math.floor(Math.random() * tributeArray.length); // Get a random index for the taunter tribute
+            randomTribute1 = tributeArray[randomIndexTribute1]; // Get the taunter tribute
+        } while (randomTribute2 === randomTribute1); // Repeat loop if the same tribute is selected as both taunter and taunted
 
         // Split the event message into three parts: before, target, and after
         const beforeTargetIndex = randomEvent.indexOf("{target}"); // Find the index of {target}
@@ -730,27 +730,27 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
         const eventMessage = (
             <>
                 {beforeTarget}
-                <strong>{randomCookie2.name}</strong>
+                <strong>{randomTribute2.name}</strong>
                 {afterTarget}
             </>
         );
 
         let result: React.ReactNode = (
             <>
-                <strong>{randomCookie1.name}</strong> {eventMessage}
+                <strong>{randomTribute1.name}</strong> {eventMessage}
             </>
         );
 
         setOutput(prevResults => [ // Update simulation output with taunt result
             ...prevResults,
             {
-                Cookie1: randomCookie1.picture,
-                Cookie2: randomCookie2.picture,
+                Tribute1: randomTribute1.picture,
+                Tribute2: randomTribute2.picture,
                 result: result
             }
         ]);
 
-        setCookieArray([...cookieArray]); // Update the state with the modified array to trigger a re-render
+        setTributeArray([...tributeArray]); // Update the state with the modified array to trigger a re-render
     }
 
     function selfEliminate() {
@@ -781,45 +781,45 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
         const randomEventIndex = Math.floor(Math.random() * events.length); // Randomly select an event index
         const randomEvent = events[randomEventIndex]; // Get the selected event
 
-        const randomIndexCookie1 = Math.floor(Math.random() * cookieArray.length); // Get a random index for the cookie to be hurt
-        const randomCookie1 = cookieArray[randomIndexCookie1]; // Get the hurt cookie
+        const randomIndexTribute1 = Math.floor(Math.random() * tributeArray.length); // Get a random index for the tribute to be hurt
+        const randomTribute1 = tributeArray[randomIndexTribute1]; // Get the hurt tribute
 
-        randomCookie1.health -= randomEvent.damage; // Reduce health of the hurt cookie by the event's damage
+        randomTribute1.health -= randomEvent.damage; // Reduce health of the hurt tribute by the event's damage
 
         let result: React.ReactNode = (
             <>
-                <strong>{randomCookie1.name}</strong> {eventMessages[randomEvent.eventName]}
-                {randomCookie1.health <= 0 ? (
+                <strong>{randomTribute1.name}</strong> {eventMessages[randomEvent.eventName]}
+                {randomTribute1.health <= 0 ? (
                     <>
                         {', '}
-                        <strong>{randomCookie1.name}</strong>
+                        <strong>{randomTribute1.name}</strong>
                         {' is eliminated'}
                     </>
                 ) : (
                     <>
                         {', '}
-                        <strong>{randomCookie1.name}</strong>
+                        <strong>{randomTribute1.name}</strong>
                         {' survives'}
                     </>
                 )}
             </>
         );
 
-        if (randomCookie1.health <= 0) { // Check if the hurt cookie is eliminated
-            randomCookie1.isAlive = false; // Mark hurt cookie as not alive
-            cookieArray.splice(randomIndexCookie1, 1); // Remove the hurt cookie from the array
+        if (randomTribute1.health <= 0) { // Check if the hurt tribute is eliminated
+            randomTribute1.isAlive = false; // Mark hurt tribute as not alive
+            tributeArray.splice(randomIndexTribute1, 1); // Remove the hurt tribute from the array
         }
 
         setOutput(prevResults => [ // Update simulation output with the event result
             ...prevResults,
             {
-                Cookie1: randomCookie1.picture,
-                Cookie2: "empty",
+                Tribute1: randomTribute1.picture,
+                Tribute2: "empty",
                 result: result
             }
         ]);
 
-        setCookieArray([...cookieArray]); // Update the state with the modified array to trigger a re-render
+        setTributeArray([...tributeArray]); // Update the state with the modified array to trigger a re-render
     }
 
     function steal() {
@@ -829,24 +829,24 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
             "destroys {target}'s supplies"
         ];
 
-        let randomIndexCookie2 = Math.floor(Math.random() * cookieArray.length); // Get a random index for the cookie to be stolen from
-        let randomCookie2 = cookieArray[randomIndexCookie2]; // Get the cookie to be stolen from
+        let randomIndexTribute2 = Math.floor(Math.random() * tributeArray.length); // Get a random index for the tribute to be stolen from
+        let randomTribute2 = tributeArray[randomIndexTribute2]; // Get the tribute to be stolen from
 
-        let randomIndexCookie1; // Initialize variable for thief index
-        let randomCookie1; // Initialize variable for thief cookie
+        let randomIndexTribute1; // Initialize variable for thief index
+        let randomTribute1; // Initialize variable for thief tribute
 
-        do { // Loop until a different cookie is selected as the thief
-            randomIndexCookie1 = Math.floor(Math.random() * cookieArray.length); // Get a random index for the thief cookie
-            randomCookie1 = cookieArray[randomIndexCookie1]; // Get the thief cookie
-        } while (randomCookie2 === randomCookie1); // Repeat loop if the same cookie is selected as both thief and victim
+        do { // Loop until a different tribute is selected as the thief
+            randomIndexTribute1 = Math.floor(Math.random() * tributeArray.length); // Get a random index for the thief tribute
+            randomTribute1 = tributeArray[randomIndexTribute1]; // Get the thief tribute
+        } while (randomTribute2 === randomTribute1); // Repeat loop if the same tribute is selected as both thief and victim
 
         const randomEventIndex = Math.floor(Math.random() * events.length); // Randomly select an event index
         const randomEvent = events[randomEventIndex]; // Get the selected event
 
         // General damage for stealing supplies or destroying supplies
-        randomCookie2.damage -= 50;
-        if (randomCookie2.damage < 0) {
-            randomCookie2.damage = 0;
+        randomTribute2.damage -= 50;
+        if (randomTribute2.damage < 0) {
+            randomTribute2.damage = 0;
         }
 
         // Split the event message into three parts: before, target, and after
@@ -858,31 +858,31 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
         const eventMessage = (
             <>
                 {beforeTarget}
-                <strong>{randomCookie2.name}</strong>
+                <strong>{randomTribute2.name}</strong>
                 {afterTarget}
             </>
         );
 
         let result: React.ReactNode = (
             <>
-                <strong>{randomCookie1.name}</strong> {eventMessage}
+                <strong>{randomTribute1.name}</strong> {eventMessage}
             </>
         );
 
         setOutput(prevResults => [ // Update simulation output with steal result
             ...prevResults,
             {
-                Cookie1: randomCookie1.picture,
-                Cookie2: randomCookie2.picture,
+                Tribute1: randomTribute1.picture,
+                Tribute2: randomTribute2.picture,
                 result: result
             }
         ]);
 
-        setCookieArray([...cookieArray]); // Update the state with the modified array to trigger a re-render
+        setTributeArray([...tributeArray]); // Update the state with the modified array to trigger a re-render
     }
 
     function goofOff() {
-        // Array of possible events for when a cookie fools around
+        // Array of possible events for when a tribute fools around
         const events = [
             "camouflages themself in the bushes",
             "constructs a hut made out of grass",
@@ -896,25 +896,25 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
         const randomEventIndex = Math.floor(Math.random() * events.length); // Randomly select an event index
         const randomEvent = events[randomEventIndex]; // Get the selected event
 
-        const randomIndexCookie1 = Math.floor(Math.random() * cookieArray.length); // Get a random index for the cookie to fool around
-        const randomCookie1 = cookieArray[randomIndexCookie1]; // Get the fooling around cookie
+        const randomIndexTribute1 = Math.floor(Math.random() * tributeArray.length); // Get a random index for the tribute to fool around
+        const randomTribute1 = tributeArray[randomIndexTribute1]; // Get the fooling around tribute
 
         let result: React.ReactNode = (
             <>
-                <strong>{randomCookie1.name}</strong> {randomEvent}
+                <strong>{randomTribute1.name}</strong> {randomEvent}
             </>
         );
 
         setOutput(prevResults => [ // Update simulation output with the event result
             ...prevResults,
             {
-                Cookie1: randomCookie1.picture,
-                Cookie2: "empty",
+                Tribute1: randomTribute1.picture,
+                Tribute2: "empty",
                 result: result
             }
         ]);
 
-        setCookieArray([...cookieArray]); // Update the state with the modified array to trigger a re-render
+        setTributeArray([...tributeArray]); // Update the state with the modified array to trigger a re-render
     }
 
     // Function to simulate a duel
@@ -946,28 +946,28 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
             "explosives": ["landmines", "bombs"]
         };
 
-        let randomIndexCookie2 = Math.floor(Math.random() * cookieArray.length); // Get a random index for the cookie to be attacked
-        let randomCookie2 = cookieArray[randomIndexCookie2]; // Get the attacked cookie
+        let randomIndexTribute2 = Math.floor(Math.random() * tributeArray.length); // Get a random index for the tribute to be attacked
+        let randomTribute2 = tributeArray[randomIndexTribute2]; // Get the attacked tribute
 
-        let randomIndexCookie1; // Initialize variable for attacker index
-        let randomCookie1; // Initialize variable for attacker cookie
+        let randomIndexTribute1; // Initialize variable for attacker index
+        let randomTribute1; // Initialize variable for attacker tribute
 
-        do { // Loop until a different cookie is selected as the attacker
-            randomIndexCookie1 = Math.floor(Math.random() * cookieArray.length); // Get a random index for the attacker cookie
-            randomCookie1 = cookieArray[randomIndexCookie1]; // Get the attacker cookie
-        } while (randomCookie2 === randomCookie1); // Repeat loop if same cookie is selected as both attacked and attacker
+        do { // Loop until a different tribute is selected as the attacker
+            randomIndexTribute1 = Math.floor(Math.random() * tributeArray.length); // Get a random index for the attacker tribute
+            randomTribute1 = tributeArray[randomIndexTribute1]; // Get the attacker tribute
+        } while (randomTribute2 === randomTribute1); // Repeat loop if same tribute is selected as both attacked and attacker
 
-        let calculatedDamage: number = randomCookie1.damage / 2;
-        randomCookie2.health -= calculatedDamage; // Reduce health of the attacked cookie by attacker's damage
+        let calculatedDamage: number = randomTribute1.damage / 2;
+        randomTribute2.health -= calculatedDamage; // Reduce health of the attacked tribute by attacker's damage
 
         let eventMessage = "";
-        if (!randomCookie1.weapon || randomCookie1.weapon === "none") {
+        if (!randomTribute1.weapon || randomTribute1.weapon === "none") {
             const randomEventIndex = Math.floor(Math.random() * noWeaponEvents.length);
-            eventMessage = noWeaponEvents[randomEventIndex].replace("{target}", randomCookie2.name);
+            eventMessage = noWeaponEvents[randomEventIndex].replace("{target}", randomTribute2.name);
         } else {
             let weaponClass: keyof typeof weaponClasses = "melee";
             for (let key in weaponClasses) {
-                if (weaponClasses[key as keyof typeof weaponClasses].includes(randomCookie1.weapon)) { // Type assertion
+                if (weaponClasses[key as keyof typeof weaponClasses].includes(randomTribute1.weapon)) { // Type assertion
                     weaponClass = key as keyof typeof weaponClasses;
                     break;
                 }
@@ -985,44 +985,44 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
 
             const randomEventIndex = Math.floor(Math.random() * eventArray.length);
             eventMessage = eventArray[randomEventIndex]
-                .replace("{target}", randomCookie2.name)
-                .replace("{weapon}", randomCookie1.weapon);
+                .replace("{target}", randomTribute2.name)
+                .replace("{weapon}", randomTribute1.weapon);
         }
 
         let result = (
             <>
-                <strong>{randomCookie1.name}</strong> {eventMessage}
-                {randomCookie2.health <= 0 ? (
+                <strong>{randomTribute1.name}</strong> {eventMessage}
+                {randomTribute2.health <= 0 ? (
                     <>
                         {', '}
-                        <strong>{randomCookie2.name}</strong>
+                        <strong>{randomTribute2.name}</strong>
                         {' is eliminated'}
                     </>
                 ) : (
                     <>
                         {', '}
-                        <strong>{randomCookie2.name}</strong>
+                        <strong>{randomTribute2.name}</strong>
                         {' survives'}
                     </>
                 )}
             </>
         );
 
-        if (randomCookie2.health <= 0) { // Check if the attacked cookie is eliminated
-            randomCookie2.isAlive = false; // Mark attacked cookie as not alive
-            cookieArray.splice(randomIndexCookie2, 1); // Remove the attacked cookie from the array
+        if (randomTribute2.health <= 0) { // Check if the attacked tribute is eliminated
+            randomTribute2.isAlive = false; // Mark attacked tribute as not alive
+            tributeArray.splice(randomIndexTribute2, 1); // Remove the attacked tribute from the array
         }
 
         setOutput(prevResults => [ // Update simulation output with duel result
             ...prevResults,
             {
-                Cookie1: randomCookie1.picture,
-                Cookie2: randomCookie2.picture,
+                Tribute1: randomTribute1.picture,
+                Tribute2: randomTribute2.picture,
                 result: result
             }
         ]);
 
-        setCookieArray([...cookieArray]); // Update the state with the modified array to trigger a re-render
+        setTributeArray([...tributeArray]); // Update the state with the modified array to trigger a re-render
     }
 
     return (
@@ -1035,13 +1035,13 @@ function Bloodbath({ cookies }: ReapingProps): React.ReactElement {
             {simulationReady && <button onClick={beginSimulation} className="begin-button">Begin Simulation</button>}
             {output.map((result, index) => (
                 <div key={index}>
-                    {result.Cookie1 !== "empty" && <img src={result.Cookie1} alt="Cookie1" className="tribute-image" />}
-                    {result.Cookie2 !== "empty" && <img src={result.Cookie2} alt="Cookie2" className="tribute-image" />}
+                    {result.Tribute1 !== "empty" && <img src={result.Tribute1} alt="Tribute1" className="tribute-image" />}
+                    {result.Tribute2 !== "empty" && <img src={result.Tribute2} alt="Tribute2" className="tribute-image" />}
                     <p>{result.result}</p>
-                    {cookieArray.length === 1 && index === output.length - 1 && (
+                    {tributeArray.length === 1 && index === output.length - 1 && (
                         <div>
-                            <img src={cookieArray[0].picture} alt="winner" className="tribute-image" />
-                            <p>The last one standing is <strong>{cookieArray[0].name}</strong>! <strong>{cookieArray[0].name}</strong> is the Winner!</p>
+                            <img src={tributeArray[0].picture} alt="winner" className="tribute-image" />
+                            <p>The last one standing is <strong>{tributeArray[0].name}</strong>! <strong>{tributeArray[0].name}</strong> is the Winner!</p>
                         </div>
                     )}
                 </div>

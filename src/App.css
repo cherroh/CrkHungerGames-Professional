@@ -19,7 +19,7 @@ img.logo {
   margin-bottom: 20px;
 }
 
-/*This styles the Cookie Run Hunger Games header*/
+/*This styles the Cherrow's Hunger Games header*/
 .headerlabel {
   position: absolute;
   text-align: center;
@@ -157,7 +157,7 @@ img.logo {
   color: #ffcf27;
 }
 
-/*This makes the cookie's names orange*/
+/*This makes the tribute's names orange*/
 strong {
   font-weight: bold;
   color: rgb(251, 130, 0);

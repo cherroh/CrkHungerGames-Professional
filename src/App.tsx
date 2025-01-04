@@ -6,11 +6,11 @@ import cherrowlogo from './assets/cherrowlogo.jpg';
 import Reaping from './reaping';
 import Bloodbath from './bloodbath';
 import ChangeCast from './ChangeCast';
-import cookiesData from './tributes';
+import tributesData from './tributes';
 
 function App(): React.ReactElement {
   const [phase, setPhase] = useState<'reaping' | 'bloodbath'>('reaping'); // Manage the state of the place the user is currently at
-  const [cookies, setCookies] = useState(cookiesData); // Manage the state of the cookies array
+  const [tributes, setTributes] = useState(tributesData); // Manage the state of the tributes array
 
   // Clicking the reset button reloads the website, deleting all saved information and progress
   function resetAll(): void {
@@ -26,12 +26,12 @@ function App(): React.ReactElement {
     <>
       {/*this is the persistent website logo*/}
       <img src={cherrowlogo} alt="cherrow logo" className="logo" />
-      {/*this is the "Cookie Run Hunger Games" heading*/}
+      {/*this is the "Cherrow's Hunger Games" heading*/}
       <div className="headerlabel">
-        <p>Cookie Run Hunger Games</p>
+        <p>Cherrow's Hunger Games</p>
       </div>
       {/*this renders a grid of all 24 tributes*/}
-      {phase === 'reaping' ? <Reaping cookies={cookies} /> : <Bloodbath cookies={cookies} />}
+      {phase === 'reaping' ? <Reaping tributes={tributes} /> : <Bloodbath tributes={tributes} />}
       {/*this button reloads the website*/}
       <button onClick={resetAll} className="reset-button">Reset All</button>
       {/*this button takes the user to the bloodbath phase*/}
@@ -142,7 +142,7 @@ function App(): React.ReactElement {
         </div>
       )}
       {/*this renders the forms that allows the users to change the tribute's properties*/}
-      {phase === 'reaping' && <ChangeCast cookies={cookies} setCookies={setCookies} />} {/* Conditionally render ChangeCast */}
+      {phase === 'reaping' && <ChangeCast tributes={tributes} setTributes={setTributes} />} {/* Conditionally render ChangeCast */}
     </>
   );
 }

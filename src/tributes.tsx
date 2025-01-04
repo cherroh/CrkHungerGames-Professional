@@ -1,7 +1,7 @@
-// tributes.tsx holds the cookie array, with default values set by the author of this website
+// tributes.tsx holds the tribute array, with default values set by the author of this website
 
-// Define the types for all cookies
-export type CookieType = {
+// Define the types for all tributes
+export type TributeType = {
     name: string;
     isAlive: boolean;
     health: number;
@@ -10,8 +10,8 @@ export type CookieType = {
     weapon: string;
 };
   
-// The default cookie array
-const cookie: CookieType[] = [
+// The default tribute array
+const tribute: TributeType[] = [
     {
         name: "Caramel Arrow",
         isAlive: true,
@@ -206,4 +206,4 @@ const cookie: CookieType[] = [
     }
 ];
 
-export default cookie;
+export default tribute;

@@ -1,37 +1,37 @@
-// ChangeCast.tsx generates the forms the user uses to change the default cookie array
+// ChangeCast.tsx generates the forms the user uses to change the default tribute array
 
 import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { CookieType } from './tributes';
+import { TributeType } from './tributes';
 
-function ChangeCast({ cookies, setCookies }: { readonly cookies: CookieType[], readonly setCookies: React.Dispatch<React.SetStateAction<CookieType[]>> }) {
+function ChangeCast({ tributes, setTributes }: { readonly tributes: TributeType[], readonly setTributes: React.Dispatch<React.SetStateAction<TributeType[]>> }) {
     // State that manages the forms
-    // It works because the user can only update 1 cookie at a time
-    const [cookieForms, setCookieForms] = useState(
-        cookies.map((cookie) => ({
-            newName: cookie.name,
-            newHealth: cookie.health,
-            newDamage: cookie.damage,
-            newPicture: cookie.picture
+    // It works because the user can only update 1 tribute at a time
+    const [tributeForms, setTributeForms] = useState(
+        tributes.map((tribute) => ({
+            newName: tribute.name,
+            newHealth: tribute.health,
+            newDamage: tribute.damage,
+            newPicture: tribute.picture
         }))
     );
 
-    // Function that handles the change in a cookie's property
-    const handleUpdateCookie = (index: number) => {
+    // Function that handles the change in a tribute's property
+    const handleUpdateTribute = (index: number) => {
         return () => {
-            const updatedCookies = [...cookies];
-            const newHealth = cookieForms[index].newHealth;
-            const newDamage = cookieForms[index].newDamage;
+            const updatedTributes = [...tributes];
+            const newHealth = tributeForms[index].newHealth;
+            const newDamage = tributeForms[index].newDamage;
 
             // Check if the new health and damage are not negative or zero
             if (newHealth > 0 && newDamage > 0) {
-                updatedCookies[index] = {
-                    ...updatedCookies[index],
-                    name: cookieForms[index].newName,
+                updatedTributes[index] = {
+                    ...updatedTributes[index],
+                    name: tributeForms[index].newName,
                     health: newHealth,
                     damage: newDamage,
-                    picture: cookieForms[index].newPicture
+                    picture: tributeForms[index].newPicture
                 };
-                setCookies(updatedCookies);
+                setTributes(updatedTributes);
             } else {
                 // If health or damage is negative or zero, do not update the corresponding property
                 // Call out the user for doing this
@@ -40,17 +40,17 @@ function ChangeCast({ cookies, setCookies }: { readonly cookies: CookieType[], r
         };
     };
 
-    // Function that handles the user's request to change a cookie's property
+    // Function that handles the user's request to change a tribute's property
     const handleInputChange = (index: number, field: string) => {
         return (e: ChangeEvent<HTMLInputElement>) => {
             const value = e.target.value;
-            setCookieForms((prevCookieForms) => {
-                const newCookieForms = [...prevCookieForms];
-                newCookieForms[index] = {
-                    ...newCookieForms[index],
+            setTributeForms((prevTributeForms) => {
+                const newTributeForms = [...prevTributeForms];
+                newTributeForms[index] = {
+                    ...newTributeForms[index],
                     [field]: value
                 };
-                return newCookieForms;
+                return newTributeForms;
             });
         };
     };
@@ -58,12 +58,12 @@ function ChangeCast({ cookies, setCookies }: { readonly cookies: CookieType[], r
     return (
         <div className="theform">
             {/*this mapping generates all 24 forms*/}
-            {cookies.map((_cookie, index) => (
+            {tributes.map((_tribute, index) => (
                 <div key={index} className="form-container">
                     <h1>Tribute #{index + 1}</h1>
                     <form onSubmit={(e: FormEvent<HTMLFormElement>) => {
                         e.preventDefault();
-                        handleUpdateCookie(index)();
+                        handleUpdateTribute(index)();
                     }}>
                         <table className="form-table">
                             <thead>
@@ -78,9 +78,9 @@ function ChangeCast({ cookies, setCookies }: { readonly cookies: CookieType[], r
                                     <td>
                                         <input
                                             type="text"
-                                            value={cookieForms[index].newName}
+                                            value={tributeForms[index].newName}
                                             onChange={handleInputChange(index, 'newName')}
-                                            placeholder={!cookieForms[index].newName ? 'New Name' : ''}
+                                            placeholder={!tributeForms[index].newName ? 'New Name' : ''}
                                         />
                                     </td>
                                 </tr>
@@ -89,9 +89,9 @@ function ChangeCast({ cookies, setCookies }: { readonly cookies: CookieType[], r
                                     <td>
                                         <input
                                             type="number"
-                                            value={cookieForms[index].newHealth}
+                                            value={tributeForms[index].newHealth}
                                             onChange={handleInputChange(index, 'newHealth')}
-                                            placeholder={!cookieForms[index].newHealth ? 'New Health' : ''}
+                                            placeholder={!tributeForms[index].newHealth ? 'New Health' : ''}
                                         />
                                     </td>
                                 </tr>
@@ -100,9 +100,9 @@ function ChangeCast({ cookies, setCookies }: { readonly cookies: CookieType[], r
                                     <td>
                                         <input
                                             type="number"
-                                            value={cookieForms[index].newDamage}
+                                            value={tributeForms[index].newDamage}
                                             onChange={handleInputChange(index, 'newDamage')}
-                                            placeholder={!cookieForms[index].newDamage ? 'New Damage' : ''}
+                                            placeholder={!tributeForms[index].newDamage ? 'New Damage' : ''}
                                         />
                                     </td>
                                 </tr>
@@ -111,9 +111,9 @@ function ChangeCast({ cookies, setCookies }: { readonly cookies: CookieType[], r
                                     <td>
                                         <input
                                             type="text"
-                                            value={cookieForms[index].newPicture}
+                                            value={tributeForms[index].newPicture}
                                             onChange={handleInputChange(index, 'newPicture')}
-                                            placeholder={!cookieForms[index].newPicture ? 'New Picture URL' : ''}
+                                            placeholder={!tributeForms[index].newPicture ? 'New Picture URL' : ''}
                                         />
                                     </td>
                                 </tr>

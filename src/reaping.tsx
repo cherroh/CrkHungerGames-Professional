@@ -2,15 +2,15 @@
 
 import React from 'react';
 import './App.css';
-import { CookieType } from './tributes';
+import { TributeType } from './tributes';
 
 interface ReapingProps {
-  cookies: CookieType[]; // Define the prop type
+  tributes: TributeType[]; // Define the prop type
 }
 
-function Reaping({ cookies }: ReapingProps): React.ReactElement {
+function Reaping({ tributes }: ReapingProps): React.ReactElement {
 
-  // Generate the form that allows the user to change properties in the cookie array
+  // Generate the form that allows the user to change properties in the tribute array
   return (
     <div className="reaping">
       <table>
@@ -23,10 +23,10 @@ function Reaping({ cookies }: ReapingProps): React.ReactElement {
                 ))}
               </tr>
               <tr key={rowIndex + 1000}>
-                {cookies.slice(start, start + 6).map((cookieObj, cellIndex) => (
+                {tributes.slice(start, start + 6).map((tributeObj, cellIndex) => (
                   <td key={cellIndex}>
-                    <img src={cookieObj.picture} alt={cookieObj.name} className="tribute-image" />
-                    <p className="tribute-name">{cookieObj.name}</p>
+                    <img src={tributeObj.picture} alt={tributeObj.name} className="tribute-image" />
+                    <p className="tribute-name">{tributeObj.name}</p>
                   </td>
                 ))}
               </tr>
